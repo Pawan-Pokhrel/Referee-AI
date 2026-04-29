@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from 'react';
+import Image from 'next/image';
 
 export default function UploadZone({ onFileSelect, loading }) {
   const [dragActive, setDragActive] = useState(false);
@@ -39,19 +40,23 @@ export default function UploadZone({ onFileSelect, loading }) {
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
-      className={`relative w-full max-w-xl mx-auto rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer ${
+      className={`relative w-full h-full min-h-[200px] rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer flex-1 ${
         dragActive
           ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 shadow-[0_0_30px_var(--color-accent-glow)]'
           : 'border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface)] bg-[#111118]'
       }`}
     >
-      <label className="flex flex-col items-center justify-center p-10 cursor-pointer h-64">
+      <label className="flex flex-col items-center justify-center p-6 cursor-pointer w-full h-full">
         {preview ? (
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-full h-full object-contain rounded-xl"
-          />
+          <div className="relative w-full h-full rounded-xl overflow-hidden">
+            <Image
+              src={preview}
+              alt="Preview"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 rounded-2xl bg-[#1a1a24] border border-[var(--color-border)] flex items-center justify-center mb-4 shadow-sm group-hover:shadow-md transition-shadow">

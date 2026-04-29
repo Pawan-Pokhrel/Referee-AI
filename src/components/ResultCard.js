@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-export default function ResultCard({ imagePreview, result }) {
+export default function ResultCard({ result }) {
   if (!result) return null;
 
   // Format the probabilities for the bar chart
@@ -11,34 +12,20 @@ export default function ResultCard({ imagePreview, result }) {
     .map(([name, prob]) => ({ name, probability: prob * 100 }))
     .sort((a, b) => b.probability - a.probability); // Sort descending
 
-  const sportEmoji = result.sport === 'cricket' ? '🏏' : '⚽';
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-8 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-xl"
+      className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-xl h-full"
     >
-      <div className="flex flex-col md:flex-row h-full">
-        {/* Left: Image Preview */}
-        <div className="w-full md:w-5/12 bg-black/40 border-r border-[var(--color-border)] p-6 flex items-center justify-center min-h-[300px]">
-          <img
-            src={imagePreview}
-            alt="Uploaded signal"
-            className="max-w-full max-h-full object-contain rounded-xl border border-[var(--color-border)] shadow-lg"
-          />
-        </div>
-
-        {/* Right: Results */}
-        <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
+      <div className="flex flex-col h-full p-8 justify-center">
           {/* Stage 1: Sport */}
           <div className="mb-6">
             <h4 className="text-xs uppercase tracking-wider text-[var(--color-text-dim)] font-semibold mb-2">
               Stage 1: Sport Detection
             </h4>
             <div className="flex items-center gap-4">
-              <div className="px-3 py-1.5 bg-[#1a1a24] border border-[var(--color-border)] rounded-lg text-sm font-medium flex items-center gap-2">
-                <span>{sportEmoji}</span>
+              <div className="px-3 py-1.5 bg-[#1a1a24] border border-[var(--color-border)] rounded-lg text-sm font-medium flex items-center">
                 <span className="capitalize">{result.sport}</span>
               </div>
               <div className="flex-1">
@@ -122,7 +109,6 @@ export default function ResultCard({ imagePreview, result }) {
             </div>
           </div>
         </div>
-      </div>
     </motion.div>
   );
 }

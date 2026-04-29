@@ -18,19 +18,19 @@ export default function ModelCompareGrid({ sportComparison, signalComparison }) 
     resnet50: 'Pretrained Backbone',
   };
 
-  const baselineSignalConf = signalComparison['baseline'].confidence;
-
-  return (
-    <div className="mt-8 space-y-10">
+  const renderGrid = (title, comparisonData) => {
+    const baselineConf = comparisonData['baseline'].confidence;
+    
+    return (
       <div className="text-center">
-        <h3 className="text-xl font-semibold mb-6 text-[var(--color-text)]">
-          Stage 2: Routed Signal Classification
+        <h3 className="text-2xl font-bold mb-8 text-[var(--color-text)]">
+          {title}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {models.map((variant, i) => {
-            const data = signalComparison[variant];
+            const data = comparisonData[variant];
             const isBest = variant === 'resnet50';
-            const delta = ((data.confidence - baselineSignalConf) * 100).toFixed(1);
+            const delta = ((data.confidence - baselineConf) * 100).toFixed(1);
             const deltaColor = delta > 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-text-muted)]';
 
             return (
@@ -106,6 +106,13 @@ export default function ModelCompareGrid({ sportComparison, signalComparison }) 
           })}
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="mt-8 space-y-16">
+      {renderGrid("Stage 1: Sport Detection Models", sportComparison)}
+      {renderGrid(`Stage 2: Routed Signal Classification (${sportComparison['resnet50'].prediction})`, signalComparison)}
     </div>
   );
 }

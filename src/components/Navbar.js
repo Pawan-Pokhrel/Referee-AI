@@ -28,7 +28,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)] to-purple-500 flex items-center justify-center text-white text-sm font-bold">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -47,6 +47,7 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
+                prefetch={true}
                 className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-[var(--color-surface)] ${
                   isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                 }`}
@@ -58,14 +59,15 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <a
-            href="https://github.com"
+          <Link
+            href="https://github.com/Pawan-Pokhrel/Referee-AI"
             target="_blank"
             rel="noreferrer"
+            prefetch={false}
             className="ml-3 px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-lg hover:border-[var(--color-border-hover)] hover:text-[var(--color-text)] transition-all"
           >
             GitHub
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
