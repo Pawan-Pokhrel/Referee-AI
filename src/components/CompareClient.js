@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Legend, CartesianGrid } from 'recharts';
-import toast from 'react-hot-toast';
-import UploadZone from '@/components/UploadZone';
 import ModelCompareGrid from '@/components/ModelCompareGrid';
+import UploadZone from '@/components/UploadZone';
 import { compare } from '@/lib/api';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip as RechartsTooltip, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export default function CompareClient() {
   const [loading, setLoading] = useState(false);
@@ -62,7 +62,7 @@ export default function CompareClient() {
           >
             <div className="w-full p-4 bg-[var(--color-accent)]/10 border border-[var(--color-accent)] rounded-xl text-center shadow-[0_0_20px_var(--color-accent-glow)]">
               <span className="text-lg font-medium">
-                ResNet50 outperforms Baseline by <span className="font-bold text-[var(--color-accent)]">+{((result.signal_comparison.resnet50.confidence - result.signal_comparison.baseline.confidence) * 100).toFixed(1)}%</span> confidence
+                ResNet50 outperforms Baseline by <span className="font-bold text-[var(--color-accent)]">{((result.signal_comparison.resnet50.confidence - result.signal_comparison.baseline.confidence) * 100).toFixed(1)}%</span> confidence
               </span>
             </div>
 
