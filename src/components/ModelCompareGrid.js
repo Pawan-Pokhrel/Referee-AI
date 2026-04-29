@@ -39,15 +39,18 @@ export default function ModelCompareGrid({ sportComparison, signalComparison }) 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15, duration: 0.5 }}
-                className={`relative bg-[var(--color-surface)] p-6 rounded-2xl border ${
+                className={`relative overflow-hidden bg-gradient-to-b from-[var(--color-surface)] to-[#0c0c12] p-8 rounded-3xl border ${
                   isBest
-                    ? 'border-[var(--color-accent)] shadow-[0_0_20px_var(--color-accent-glow)]'
-                    : 'border-[var(--color-border)]'
-                }`}
+                    ? 'border-[var(--color-accent)] shadow-[0_8px_30px_-5px_var(--color-accent-glow)]'
+                    : 'border-[var(--color-border)] hover:border-[var(--color-border-hover)]'
+                } transition-all duration-300`}
               >
+                {/* Subtle background glow for the best model */}
+                {isBest && <div className="absolute -top-20 -right-20 w-40 h-40 bg-[var(--color-accent)] blur-[80px] opacity-20 pointer-events-none" />}
+                
                 {isBest && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[var(--color-accent)] text-white text-xs font-bold rounded-full shadow-lg">
-                    BEST
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 rounded-b-xl px-4 py-1.5 bg-gradient-to-r from-[var(--color-accent)] to-purple-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg">
+                    Best Model
                   </div>
                 )}
                 
@@ -56,38 +59,44 @@ export default function ModelCompareGrid({ sportComparison, signalComparison }) 
                   <span className="text-xs text-[var(--color-text-dim)]">{archTags[variant]}</span>
                 </div>
 
-                <div className="flex flex-col items-center justify-center mb-6">
+                <div className="flex flex-col items-center justify-center mb-8 relative z-10">
                   {/* Confidence Ring/Donut representation */}
-                  <div className="relative w-32 h-32 flex items-center justify-center mb-4">
-                    <svg className="w-full h-full transform -rotate-90">
+                  <div className="relative w-36 h-36 flex items-center justify-center mb-6">
+                    <svg className="w-full h-full transform -rotate-90 drop-shadow-md" viewBox="0 0 128 128">
                       <circle cx="64" cy="64" r="56" fill="none" stroke="#1a1a24" strokeWidth="8" />
                       <motion.circle
                         initial={{ strokeDasharray: "0 400" }}
                         animate={{ strokeDasharray: `${data.confidence * 351.8} 400` }}
-                        transition={{ duration: 1.5, delay: 0.5 }}
+                        transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
                         cx="64" cy="64" r="56" fill="none"
-                        stroke={isBest ? 'var(--color-accent)' : '#55556a'}
+                        stroke={isBest ? 'url(#accent-gradient)' : '#55556a'}
                         strokeWidth="8" strokeLinecap="round"
                       />
+                      <defs>
+                        <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="var(--color-accent)" />
+                          <stop offset="100%" stopColor="#c084fc" />
+                        </linearGradient>
+                      </defs>
                     </svg>
-                    <div className="absolute flex flex-col items-center justify-center">
-                      <span className="text-2xl font-bold">{(data.confidence * 100).toFixed(1)}%</span>
-                      <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">Confidence</span>
+                    <div className="absolute flex flex-col items-center justify-center text-center">
+                      <span className="text-3xl font-black tracking-tight">{(data.confidence * 100).toFixed(1)}<span className="text-xl text-[var(--color-text-muted)]">%</span></span>
+                      <span className="text-[9px] font-bold text-[var(--color-text-dim)] uppercase tracking-widest mt-1">Confidence</span>
                     </div>
                   </div>
                   
-                  <div className="w-full bg-[#1a1a24] rounded-lg p-3 text-center border border-[var(--color-border)]">
-                    <div className="text-[10px] uppercase text-[var(--color-text-dim)] mb-1">Prediction</div>
-                    <div className="text-xl font-bold capitalize text-[var(--color-text)]">
+                  <div className="w-full bg-[#16161f] rounded-xl p-4 text-center border border-[var(--color-border)] shadow-inner">
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-text-dim)] mb-2">Prediction Output</div>
+                    <div className={`text-2xl font-black capitalize ${isBest ? 'bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent' : 'text-[var(--color-text)]'}`}>
                       {data.prediction}
                     </div>
                   </div>
                 </div>
 
                 {variant !== 'baseline' && (
-                  <div className="text-center pt-4 border-t border-[var(--color-border)]">
-                    <span className="text-xs text-[var(--color-text-muted)]">vs Baseline: </span>
-                    <span className={`text-sm font-semibold ${deltaColor}`}>
+                  <div className="text-center pt-5 border-t border-[var(--color-border)]/50 relative z-10">
+                    <span className="text-xs font-medium text-[var(--color-text-muted)]">Performance vs Baseline: </span>
+                    <span className={`text-sm font-bold ml-1 ${deltaColor} px-2 py-1 rounded-md bg-[#16161f]`}>
                       {delta > 0 ? '+' : ''}{delta}%
                     </span>
                   </div>

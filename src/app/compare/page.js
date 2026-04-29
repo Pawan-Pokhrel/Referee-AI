@@ -45,15 +45,15 @@ export default function ComparePage() {
   const chartData = getChartData();
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12 min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-screen">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-16"
       >
-        <h1 className="text-4xl font-extrabold mb-4">Model Comparison</h1>
-        <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto">
-          Evaluate an image across all three model architectures side-by-side. See how ResNet50 outperforms the simpler CNN models.
+        <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">Model Architecture Comparison</h1>
+        <p className="text-[var(--color-text-muted)] max-w-3xl mx-auto text-lg leading-relaxed">
+          Evaluate an image across all three model architectures side-by-side. Observe the confidence deltas and probability distributions to see how <strong className="text-white font-semibold">ResNet50</strong> systematically outperforms simpler CNN models.
         </p>
       </motion.div>
 
