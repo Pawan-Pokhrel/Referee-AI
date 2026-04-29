@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Legend, CartesianGrid } from 'recharts';
 import toast from 'react-hot-toast';
 import UploadZone from '@/components/UploadZone';
@@ -42,20 +42,23 @@ export default function CompareClient() {
   const chartData = getChartData();
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-      {/* Left Column: Input */}
-      <div className="xl:col-span-1 flex flex-col h-[500px] xl:h-[calc(100vh-14rem)] sticky top-24">
+    <div className={`flex-1 ${result ? 'grid grid-cols-1 xl:grid-cols-4 gap-8' : 'flex flex-col items-center justify-start max-w-3xl mx-auto w-full mt-8'}`}>
+      <motion.div 
+        layout 
+        className={result ? 'xl:col-span-1 flex flex-col h-[500px] xl:h-[calc(100vh-14rem)] sticky top-24' : 'w-full h-[500px]'}
+      >
         <UploadZone onFileSelect={handleCompare} loading={loading} />
-      </div>
+      </motion.div>
 
-      {/* Right Column: Grid */}
-      <div className="xl:col-span-3">
-        {result && !loading ? (
+      <AnimatePresence mode="wait">
+        {result && !loading && (
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col space-y-8"
+            key="comparison-grid"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            className="xl:col-span-3 flex flex-col space-y-8"
           >
             <div className="w-full p-4 bg-[var(--color-accent)]/10 border border-[var(--color-accent)] rounded-xl text-center shadow-[0_0_20px_var(--color-accent-glow)]">
               <span className="text-lg font-medium">
@@ -105,12 +108,8 @@ export default function CompareClient() {
               </div>
             </div>
           </motion.div>
-        ) : (
-          <div className="h-full min-h-[400px] border-2 border-dashed border-[var(--color-border)] rounded-2xl flex flex-col items-center justify-center text-[var(--color-text-muted)] bg-[var(--color-surface)]/20">
-            <p className="font-medium">Upload an image to compare models</p>
-          </div>
         )}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
